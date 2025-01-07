@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getNowPlaying } from "../api/nowPlaying";
+import { getUpcoming } from "../api/upcoming";
 import styled from "styled-components";
 import Card from "../components/movie/Card";
 
@@ -31,22 +31,22 @@ const ButtonMore = styled.button`
   }
 `;
 
-const NowPlaying = () => {
+const Upcoming = () => {
   const [movieList, setMovieList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
 
-  const fetchNowPlaying = async () => {
+  const fetchUpcoming = async (page) => {
     try {
-      const nowPlayingData = await getNowPlaying(page);
+      const upcomingData = await getUpcoming(page);
 
       if (page === 1) {
         // 첫 페이지일 경우 이전 결과를 덮어씀
-        setMovieList(nowPlayingData);
+        setMovieList(upcomingData);
       } else {
         // 그 외 페이지일 경우 기존 목록에 추가
-        setMovieList((prevMovies) => [...prevMovies, ...nowPlayingData]);
+        setMovieList((prevMovies) => [...prevMovies, ...upcomingData]);
       }
     } catch (err) {
       setError(err.message);
@@ -55,9 +55,9 @@ const NowPlaying = () => {
       setLoading(false);
     }
   };
-  
+
   useEffect(() => {
-    fetchNowPlaying(page);
+    fetchUpcoming(page);
   }, [page]);
 
   // 더 보기 핸들러
@@ -92,4 +92,4 @@ const NowPlaying = () => {
   );
 };
 
-export default NowPlaying;
+export default Upcoming;

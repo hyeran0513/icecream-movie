@@ -153,7 +153,7 @@ const Card = ({ movie }) => {
       >
         {movieDetail ? (
           <div>
-            <p>{movieDetail.overview}</p>
+            <p>{movieDetail.overview ? movieDetail.overview : '해당 영화에 대한 설명이 없습니다.'}</p>
 
             {movieDetail.genres.length > 0 ? (
               <Tab>

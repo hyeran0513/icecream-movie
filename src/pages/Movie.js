@@ -26,46 +26,69 @@ const MovieList = styled.ul`
   gap: 1.5rem;
 `;
 
+const ButtonWrapper = styled.div`
+  margin-top: 30px;
+`;
+
+const ButtonMore = styled.button`
+  position: relative;
+  padding: 14px;
+  width: 100%;
+  background-color: var(--primary-color);
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: var(--primary-darken-color);
+  }
+`;
+
 const Movie = () => {
   const [movieList, setMovieList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [genres, setGenres] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState("");
+  const [page, setPage] = useState(1);
+
+  const fetchGenres = async () => {
+    try {
+      const genresData = await getGenres();
+      setGenres(genresData);
+    } catch (err) {
+      setError(err.message);
+      console.error("에러:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchDiscovery = async (page) => {
+    try {
+      const discoveryData = await getDiscovery(selectedGenre, page);
+      setMovieList((prevMovies) => [...prevMovies, ...discoveryData]);
+    } catch (err) {
+      setError(err.message);
+      console.error("에러:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchGenres = async () => {
-      try {
-        const genresData = await getGenres();
-        setGenres(genresData);
-      } catch (err) {
-        setError(err.message);
-        console.error("에러:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchGenres();
   }, []);
 
   useEffect(() => {
-    const fetchDiscovery = async () => {
-      try {
-        const discoveryData = await getDiscovery(selectedGenre);
-        setMovieList(discoveryData);
-      } catch (err) {
-        setError(err.message);
-        console.error("에러:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+    fetchDiscovery(page);
+  }, [selectedGenre, page]);
 
-    fetchDiscovery();
-  }, [selectedGenre]);
+  // 더 보기 핸들러
+  const handleLoadMore = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
 
-  if (loading) {
+  if (loading && page === 1) {
     return <p>Loading...</p>;
   }
 
@@ -92,11 +115,19 @@ const Movie = () => {
       {movieList.length === 0 ? (
         <p>영화가 없습니다.</p>
       ) : (
-        <MovieList>
-          {movieList.map((movie) => (
-            <Card key={movie.id} movie={movie} />
-          ))}
-        </MovieList>
+        <>
+          <MovieList>
+            {movieList.map((movie) => (
+              <Card key={movie.id} movie={movie} />
+            ))}
+          </MovieList>
+
+          <ButtonWrapper>
+            <ButtonMore type="button" onClick={handleLoadMore}>
+              더 보기
+            </ButtonMore>
+          </ButtonWrapper>
+        </>
       )}
     </MoviePage>
   );

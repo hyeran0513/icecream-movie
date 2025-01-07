@@ -7,6 +7,7 @@ import theme from "./styles/Theme";
 import { ThemeProvider } from "styled-components";
 import SearchResult from "./pages/SearchResult";
 import NowPlaying from "./pages/NowPlaying";
+import Upcoming from "./pages/Upcoing";
 
 function App() {
   return (
@@ -48,6 +49,15 @@ function App() {
               element={
                 <DefaultLayout>
                   <NowPlaying />
+                </DefaultLayout>
+              }
+            />
+
+            <Route
+              path="/upcoming"
+              element={
+                <DefaultLayout>
+                  <Upcoming />
                 </DefaultLayout>
               }
             />

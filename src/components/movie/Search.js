@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { BiSearch } from "react-icons/bi";
+import { useNavigate } from 'react-router-dom';
 
 const SearchContainer = styled.div`
   position: relative;
@@ -63,24 +64,35 @@ const SearchButton = styled.button`
 `;
 
 const Search = () => {
+  const [query, setQuery] = useState('');
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    if (query.trim()) {
+      navigate(`/search?query=${encodeURIComponent(query)}`);
+    }
+  };
+
   return (
-    <>
-      <SearchContainer>
-        <SearchBox>
-          <SearchTitle>궁금하신 영화가 있으신가요?<br/>
-          검색해서 찾아보세요!</SearchTitle>
+    <SearchContainer>
+      <SearchBox>
+        <SearchTitle>어떤 영화를 찾고 계시나요?<br />
+          원하는 영화 제목을 입력하여 검색해 보세요!</SearchTitle>
 
-          <SearchInputWrapper>
-            <SearchInput placeholder="입력해 주세요." />
+        <SearchInputWrapper>
+          <SearchInput
+            placeholder="입력해 주세요."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+          />
+          <SearchButton type="button" onClick={handleSearch}>
+            <BiSearch />
+          </SearchButton>
+        </SearchInputWrapper>
+      </SearchBox>
+    </SearchContainer>
+  );
+};
 
-            <SearchButton type="button">
-              <BiSearch />
-            </SearchButton>
-          </SearchInputWrapper>
-        </SearchBox>
-      </SearchContainer>
-    </>
-  )
-}
-
-export default Search
+export default Search;

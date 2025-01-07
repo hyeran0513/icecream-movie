@@ -4,6 +4,7 @@ import { getTopRateMovies } from "../api/topRate"
 import MovieSwiper from '../components/movie/Swiper';
 import styled from "styled-components";
 import { FcFilm, FcIdea } from "react-icons/fc";
+import Intro from '../components/movie/Intro';
 
 const MoviePage = styled.div`
   display: flex;
@@ -72,6 +73,12 @@ const Home = () => {
 
   return (
     <MoviePage>
+      {/* 홈페이지 소개 */}
+      <MovieSection>
+        <Intro />
+      </MovieSection>
+
+      {/* 인기 영화 */}
       <MovieSection>
         <MovieSectionTitle>인기 영화 <FcFilm /></MovieSectionTitle>
 
@@ -82,6 +89,7 @@ const Home = () => {
         )}
       </MovieSection>
 
+      {/* 평점 높은 영화 */}
       <MovieSection>
         <MovieSectionTitle>평점 높은 영화 <FcIdea /></MovieSectionTitle>
 

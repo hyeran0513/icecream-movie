@@ -1,8 +1,8 @@
 import React from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Header from '../components/base/Header';
+import Footer from '../components/base/Footer';
 import styled from 'styled-components';
-import Search from '../components/Search';
+import Search from '../components/movie/Search';
 
 const LayoutContainer = styled.div`
   display: flex;

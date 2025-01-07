@@ -10,6 +10,7 @@ const HeaderContainer = styled.header`
   padding: 10px 0;
   width: 100%;
   height: 80px;
+  z-index: 101;
 `;
 
 const HeaderInner = styled.div`
@@ -35,6 +36,10 @@ const LogoImage = styled.img`
   object-fit: cover;
 `;
 
+const Gnb = styled.nav``;
+
+const NavItem = styled(Link)``;
+
 const Utility = styled.div``;
 
 const Header = () => {
@@ -44,6 +49,10 @@ const Header = () => {
         <Logo to="/">
           <LogoImage src="/images/logo.svg" alt="" />
         </Logo>
+
+        <Gnb>
+          <NavItem to="/movie">디스커버리</NavItem>
+        </Gnb>
 
         <Utility>
           <BiMoon />

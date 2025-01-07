@@ -49,6 +49,7 @@ const CardItem = styled.li`
   position: relative;
   overflow: hidden;
   cursor: pointer;
+  border-radius: 8px;
 
   &:hover {
     ${CardInfo} {

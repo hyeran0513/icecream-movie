@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { BiX } from "react-icons/bi";
 import usePortal from "../../hooks/usePortal";
 import ReactDOM from 'react-dom';
+import { BiSolidStar, BiSolidAlarm } from "react-icons/bi";
 
 const ModalContainer = styled.div`
   position: fixed;
@@ -18,7 +19,7 @@ const ModalContainer = styled.div`
 `;
 
 const ModalContent = styled.div`
-  background-color: #fff;
+  background-color: #222;
   padding: 20px;
   border-radius: 8px;
   max-width: 500px;
@@ -31,24 +32,51 @@ const ModalContent = styled.div`
 const ModalHeader = styled.div`
   font-size: 1.5rem;
   font-weight: bold;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
   border-bottom: 1px solid #ccc;
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+`;
+
+const ModalHeaderInfo = styled.div``;
+
+const ModalTitle = styled.h3`
+  margin-bottom: 0.5rem;
+`;
+
+const ModalMeta = styled.div`
+  display: flex;
   align-items: center;
+  gap: 1rem;
+`;
+
+const ModalVote = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 1rem;
+  
+  svg {
+    color: var(--primary-color);
+  }
+`;
+
+const ModalRuntime = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 1rem;
+
+  svg {
+    color: var(--primary-color);
+  }
 `;
 
 const ModalBody = styled.div`
   flex-grow: 1;
   padding: 20px 0;
   font-size: 1rem;
-  color: #333;
-`;
-
-const ModalFooter = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
 `;
 
 const CloseButton = styled.button`
@@ -58,25 +86,29 @@ const CloseButton = styled.button`
   cursor: pointer;
 `;
 
-const Modal = ({ isOpen, onClose, title, children }) => {
+const Modal = ({ isOpen, onClose, movie, children }) => {
   // usePortal로 portal-root 가져오기
   const portalRoot = usePortal('modal-root');
-
+console.log(JSON.stringify(movie));
   return ReactDOM.createPortal(
     <ModalContainer isOpen={isOpen} onClick={onClose}>
       <ModalContent onClick={(e) => e.stopPropagation()}>
         <ModalHeader>
-          <p>{title}</p>
+          <ModalHeaderInfo>
+            <ModalTitle>{movie.title}</ModalTitle>
+            
+            <ModalMeta>
+              <ModalVote><BiSolidStar />{movie.vote_average}</ModalVote>
+              <ModalRuntime><BiSolidAlarm /> 상영 시간 {movie.runtime}분</ModalRuntime>
+            </ModalMeta>
+          </ModalHeaderInfo>
+
           <CloseButton onClick={onClose}>
             <BiX />
           </CloseButton>
         </ModalHeader>
 
         <ModalBody>{children}</ModalBody>
-
-        <ModalFooter>
-          <button onClick={onClose}>닫기</button>
-        </ModalFooter>
       </ModalContent>
     </ModalContainer>,
     portalRoot // 포탈의 root를 container에 렌더링

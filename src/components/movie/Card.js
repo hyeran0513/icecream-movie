@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import styled from "styled-components";
 import { css } from "styled-components";
-import Modal from './Modal';
+import Modal from "./Modal";
+import { getDetail } from "../../api/detail";
 
 const CardPosterWrapper = styled.div`
-  position: relative;  
+  position: relative;
   aspect-ratio: 1 / 1.5;
   overflow: hidden;
 
@@ -33,7 +34,11 @@ const CardInfo = styled.div`
   left: 0;
   padding: 20px;
   width: 100%;
-  background: linear-gradient(to top, rgba(218, 65, 152, 0.8), rgba(0, 0, 0, 0));
+  background: linear-gradient(
+    to top,
+    rgba(218, 65, 152, 0.8),
+    rgba(0, 0, 0, 0)
+  );
   opacity: 0;
   visibility: hidden;
   transform: translateY(20%);
@@ -48,7 +53,7 @@ const CardItem = styled.li`
   &:hover {
     ${CardInfo} {
       opacity: 1;
-       visibility: visible;
+      visibility: visible;
       transform: translateY(0);
     }
 
@@ -75,16 +80,54 @@ const CardOverview = styled.div`
     `}
 `;
 
+const Tab = styled.ul`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+`;
+
+const TabItem = styled.li`
+  padding: 4px 10px;
+  background-color: #333;
+  border-radius: 4px;
+`;
+
 const Card = ({ movie }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [movieDetail, setMovieDetail] = useState(null);
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const openModal = async () => {
+    if (!movie || !movie.id) return;
+
+    setLoading(true);
+
+    try {
+      const detailData = await getDetail({ movieId: movie.id });
+      console.log(detailData);
+      setMovieDetail(detailData);
+      setIsModalOpen(true);
+    } catch (err) {
+      setError(err.message);
+      console.error("에러:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
 
   return (
     <>
@@ -105,12 +148,28 @@ const Card = ({ movie }) => {
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
-        title="모달 제목"
+        movie={movieDetail ? movieDetail : ''}
       >
-        <p>모달 내용</p>
+        {movieDetail ? (
+          <div>
+            <p>{movieDetail.overview}</p>
+
+            {movieDetail.genres.length > 0 ? (
+              <Tab>
+                {movieDetail.genres.map((genre) => (
+                  <TabItem key={genre.id}>{genre.name}</TabItem>
+                ))}
+              </Tab>
+            ) : (
+              <></>
+            )}
+          </div>
+        ) : (
+          <p>상세 정보를 불러오는 중...</p>
+        )}
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default Card
+export default Card;

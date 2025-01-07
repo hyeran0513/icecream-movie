@@ -6,6 +6,7 @@ import Movie from "./pages/Movie";
 import theme from "./styles/Theme";
 import { ThemeProvider } from "styled-components";
 import SearchResult from "./pages/SearchResult";
+import NowPlaying from "./pages/NowPlaying";
 
 function App() {
   return (
@@ -38,6 +39,15 @@ function App() {
               element={
                 <DefaultLayout>
                   <SearchResult />
+                </DefaultLayout>
+              }
+            />
+
+            <Route
+              path="/nowplaying"
+              element={
+                <DefaultLayout>
+                  <NowPlaying />
                 </DefaultLayout>
               }
             />

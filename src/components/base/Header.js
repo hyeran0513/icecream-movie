@@ -14,8 +14,8 @@ const HeaderContainer = styled.header`
 `;
 
 const HeaderInner = styled.div`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   max-width: 1240px;
   margin: 0 auto;
@@ -36,11 +36,17 @@ const LogoImage = styled.img`
   object-fit: cover;
 `;
 
-const Gnb = styled.nav``;
+const Gnb = styled.nav`
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+`;
 
 const NavItem = styled(Link)``;
 
-const Utility = styled.div``;
+const Utility = styled.div`
+  margin-left: auto;
+`;
 
 const Header = () => {
   return (
@@ -51,7 +57,8 @@ const Header = () => {
         </Logo>
 
         <Gnb>
-          <NavItem to="/movie">디스커버리</NavItem>
+          <NavItem to="/nowPlaying">현재 상영 중인 영화</NavItem>
+          <NavItem to="/movie">장르별 영화</NavItem>
         </Gnb>
 
         <Utility>

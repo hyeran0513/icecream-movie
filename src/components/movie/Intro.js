@@ -15,6 +15,14 @@ const IntroContainer = styled.div`
   svg {
     font-size: 3rem;
   }
+
+  @media (max-width: 768px) {
+    padding: 14px;
+
+    svg {
+      display: none;
+    }
+  }
 `;
 
 const IntroCaracter = styled.img`
@@ -22,6 +30,11 @@ const IntroCaracter = styled.img`
   bottom: 0;
   right: 20px;
   width: 100px;
+
+  @media (max-width: 768px) {
+    right: 10px;
+    width: 80px;
+  }
 `;
 
 const IntroText = styled.div``;
@@ -29,9 +42,16 @@ const IntroText = styled.div``;
 const IntroTitle = styled.p`
   font-size: 1.2rem;
   font-weight: bold;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 const IntroSubTitle = styled.div`
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+  }
 `;
 
 const Intro = () => {

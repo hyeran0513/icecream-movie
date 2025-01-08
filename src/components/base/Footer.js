@@ -1,19 +1,22 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const FooterContainer = styled.header`
-  padding: 10px 0;
-  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+  border-top: 1px solid var(--primary-border-color);
+
+  @media (max-width: 768px) {
+    min-height: 60px;
+  }
 `;
 
 const FooterInner = styled.div`
-  display: flex;
-  align-items: center;
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 20px;
-  height: 100%;
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+  }
 `;
 
 const Footer = () => {

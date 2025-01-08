@@ -13,7 +13,17 @@ const MoviePage = styled.div`
   flex-direction: column;
   gap: 3rem;
   margin: 0 auto;
-  max-width: 1200px;
+  padding: 0 30px;
+  max-width: 1260px;
+
+  @media (max-width: 1024px) {
+    gap: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0 20px;
+    gap: 1rem;
+  }
 `;
 
 const MovieSection = styled.section``;
@@ -25,6 +35,10 @@ const MovieSectionTitle = styled.p`
   margin-bottom: 20px;
   font-size: 20px;
   font-weight: bold;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 const Home = () => {

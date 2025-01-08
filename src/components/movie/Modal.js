@@ -1,9 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
-import { BiX } from "react-icons/bi";
 import usePortal from "../../hooks/usePortal";
-import { BiSolidStar, BiSolidAlarm } from "react-icons/bi";
+import { BiSolidStar, BiSolidAlarm, BiX } from "react-icons/bi";
 
 const ModalContainer = styled.div`
   position: fixed;
@@ -12,7 +11,7 @@ const ModalContainer = styled.div`
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
-  display: ${({ isOpen }) => (isOpen ? "flex" : "none")}; /* isOpen을 ModalContainer에서만 처리 */
+  display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
   justify-content: center;
   align-items: center;
   z-index: 1000;

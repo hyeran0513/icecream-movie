@@ -32,7 +32,7 @@ const NavigationButton = styled.div`
   pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
   visibility: ${(props) => (props.disabled ? "hidden" : "visible")};
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06), 0 4px 8px rgba(0, 0, 0, 0.1);
-  
+
   &:hover {
     background-color: var(--swiper-hover-bg-color);
   }
@@ -48,6 +48,19 @@ const NavigationButton = styled.div`
   &.next {
     right: -20px;
   }
+
+  @media (max-width: 768px) {
+    width: 34px;
+    height: 34px;
+
+    &.prev {
+      left: -17px;
+    }
+
+    &.next {
+      right: -17px;
+    }
+  }
 `;
 
 const MovieSwiper = ({ movieList }) => {
@@ -60,7 +73,7 @@ const MovieSwiper = ({ movieList }) => {
     if (prevRef.current) {
       prevRef.current.disabled = isBeginning;
     }
-    
+
     if (nextRef.current) {
       nextRef.current.disabled = isEnd;
     }
@@ -69,8 +82,18 @@ const MovieSwiper = ({ movieList }) => {
   return (
     <SwiperWrapper>
       <StyledSwiper
-        spaceBetween={20}
-        slidesPerView={5}
+        spaceBetween={10}
+        slidesPerView={2}
+        breakpoints={{
+          768: {
+            slidesPerView: 4,
+            spaceBetween: 16,
+          },
+          1024: {
+            slidesPerView: 5,
+            spaceBetween: 20,
+          },
+        }}
         modules={[Navigation]}
         onInit={(swiper) => {
           swiper.params.navigation.prevEl = prevRef.current;
@@ -95,7 +118,7 @@ const MovieSwiper = ({ movieList }) => {
       <NavigationButton ref={prevRef} className="prev" disabled={isBeginning}>
         <BiChevronLeft />
       </NavigationButton>
-      
+
       <NavigationButton ref={nextRef} className="next" disabled={isEnd}>
         <BiChevronRight />
       </NavigationButton>

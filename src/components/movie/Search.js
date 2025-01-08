@@ -23,9 +23,19 @@ const SearchContainer = styled.div`
     z-index: -1;
     opacity: 0.5;
   }
+
+  @media (max-width: 1024px) {
+    height: 500px;
+  }
+
+  @media (max-width: 768px) {
+    margin-bottom: 20px;
+    height: 400px;
+  }
 `;
 
 const SearchBox = styled.div`
+  padding: 0 20px;
   max-width: 600px;
   width: 100%;
 `;
@@ -36,6 +46,10 @@ const SearchTitle = styled.div`
   font-weight: bold;
   line-height: 1.4;
   text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 const SearchInputWrapper = styled.div`
@@ -54,6 +68,10 @@ const SearchInput = styled.input`
   &::placeholder {
     color: #fff;
   }
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
 `;
 
 const SearchButton = styled.button`
@@ -66,6 +84,15 @@ const SearchButton = styled.button`
   svg {
     font-size: 1.4rem;
     color: #fff;
+  }
+
+  @media (max-width: 768px) {
+    width: 40px;
+    height: 34px;
+
+    svg {
+      font-size: 1.2rem;
+    }
   }
 `;
 

@@ -17,6 +17,11 @@ const BannerContainer = styled.div`
     z-index: -1;
     opacity: 0.5;
   }
+
+  @media (max-width: 768px) {
+    margin-bottom: 20px;
+    height: 100px;
+  }
 `;
 
 const BannerContent = styled.div`
@@ -25,19 +30,29 @@ const BannerContent = styled.div`
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  max-width: 1200px;
+  padding: 0 30px;
+  max-width: 1260px;
   height: 100%;
 `;
 
 const BannerCharacter = styled.img`
   position: absolute;
   bottom: 0;
-  right: 0;
+  right: 30px;
+
+  @media (max-width: 768px) {
+    right: 20px;
+    width: 60px;
+  }
 `;
 
 const BannerTitle = styled.h2`
   font-size: 2rem;
   font-weight: bold;
+
+  @media (max-width: 768px) {
+    font-size: 1.2rem; 
+  }
 `;
 
 const Banner = ({ title, type }) => {

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { css } from "styled-components";
 import Modal from "./Modal";
 import { getDetail } from "../../api/detail";
 import { getReview } from "../../api/review";
@@ -46,6 +45,10 @@ const CardInfo = styled.div`
   transform: translateY(20%);
   transition: transform 0.3s ease, opacity 0.3s ease;
   color: #fff;
+
+  @media (max-width: 1024px) {
+    padding: 10px;
+  }
 `;
 
 const CardButtonWrapper = styled.div`
@@ -74,6 +77,16 @@ const CardDetailButton = styled.button`
   &:hover {
     background-color: rgba(218, 65, 152, 0.8);
   }
+
+  @media (max-width: 1024px) {
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+
+  @media (max-width: 768px) {
+    min-width: 80px;
+    font-size: 1rem;
+  }
 `;
 
 const CardItem = styled.li`
@@ -100,15 +113,27 @@ const CardItem = styled.li`
       visibility: visible;
     }
   }
+
+  @media (max-width: 768px) {
+    border-radius: 6px;
+  }
 `;
 
 const CardTitle = styled.h2`
   margin-bottom: 0.2rem;
   font-size: 1.2rem;
   font-weight: bold;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
-const CardOverview = styled.div``;
+const CardOverview = styled.div`
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+  }
+`;
 
 const Tab = styled.ul`
   display: flex;
@@ -271,7 +296,7 @@ const Card = ({ movie }) => {
 
       {/* 상세 보기 모달 */}
       <Modal
-        isOpen={isModalOpen}
+        isOpen={isModalOpen || ''}
         onClose={closeModal}
         movie={movieDetail || ""}
         review={movieReview || []}

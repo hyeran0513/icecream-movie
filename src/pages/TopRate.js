@@ -6,17 +6,35 @@ import Banner from "../components/movie/Banner";
 
 const MoviePage = styled.div`
   margin: 0 auto;
-  max-width: 1200px;
+  padding: 0 30px;
+  max-width: 1260px;
+
+  @media (max-width: 768px) {
+    padding: 0 20px;
+  }
 `;
 
 const MovieList = styled.ul`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
+
+  @media (max-width: 1024px) {
+    gap: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
 `;
 
 const ButtonWrapper = styled.div`
   margin-top: 30px;
+
+  @media (max-width: 768px) {
+    margin-top: 20px;
+  }
 `;
 
 const ButtonMore = styled.button`
@@ -30,6 +48,11 @@ const ButtonMore = styled.button`
 
   &:hover {
     background-color: var(--primary-darken-color);
+  }
+
+  @media (max-width: 768px) {
+    padding: 10px;
+    border-radius: 6px;
   }
 `;
 

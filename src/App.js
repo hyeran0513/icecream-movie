@@ -15,7 +15,13 @@ import Popular from "./pages/Popular";
 
 function App() {
    const [theme, setTheme] = useState("light");
+   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+   const toggleSidebar = () => {
+    console.log("click!", isSidebarOpen);
+     setIsSidebarOpen(!isSidebarOpen);
+   };
+   
    useEffect(() => {
      const savedTheme = localStorage.getItem("theme") || "light";
      setTheme(savedTheme);
@@ -38,7 +44,7 @@ function App() {
             <Route
               path="/"
               element={
-                <DefaultLayout toggleTheme={toggleTheme}>
+                <DefaultLayout toggleTheme={toggleTheme} toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen}>
                   <Home />
                 </DefaultLayout>
               }
@@ -47,7 +53,7 @@ function App() {
             <Route
               path="/search"
               element={
-                <DefaultLayout toggleTheme={toggleTheme}>
+                <DefaultLayout toggleTheme={toggleTheme} toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen}>
                   <SearchResult />
                 </DefaultLayout>
               }
@@ -56,7 +62,7 @@ function App() {
             <Route
               path="/popular"
               element={
-                <SubLayout toggleTheme={toggleTheme}>
+                <SubLayout toggleTheme={toggleTheme} toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen}>
                   <Popular />
                 </SubLayout>
               }
@@ -65,7 +71,7 @@ function App() {
             <Route
               path="/nowplaying"
               element={
-                <SubLayout toggleTheme={toggleTheme}>
+                <SubLayout toggleTheme={toggleTheme} toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen}>
                   <NowPlaying />
                 </SubLayout>
               }
@@ -74,7 +80,7 @@ function App() {
             <Route
               path="/upcoming"
               element={
-                <SubLayout toggleTheme={toggleTheme}>
+                <SubLayout toggleTheme={toggleTheme} toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen}>
                   <Upcoming />
                 </SubLayout>
               }
@@ -83,7 +89,7 @@ function App() {
             <Route
               path="/topRate"
               element={
-                <SubLayout toggleTheme={toggleTheme}>
+                <SubLayout toggleTheme={toggleTheme} toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen}>
                   <TopRate />
                 </SubLayout>
               }
@@ -92,7 +98,7 @@ function App() {
             <Route
               path="/movie"
               element={
-                <SubLayout toggleTheme={toggleTheme}>
+                <SubLayout toggleTheme={toggleTheme} toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen}>
                   <Movie />
                 </SubLayout>
               }

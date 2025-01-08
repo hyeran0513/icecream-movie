@@ -66,22 +66,36 @@ const NavigationButton = styled.div`
 const MovieSwiper = ({ movieList }) => {
   const prevRef = useRef();
   const nextRef = useRef();
+  const swiperRef = useRef();
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
 
   useEffect(() => {
-    if (prevRef.current) {
-      prevRef.current.disabled = isBeginning;
-    }
+    const swiper = swiperRef.current.swiper;
 
-    if (nextRef.current) {
-      nextRef.current.disabled = isEnd;
+    if (swiper) {
+      swiper.params.navigation.prevEl = prevRef.current;
+      swiper.params.navigation.nextEl = nextRef.current;
+      swiper.navigation.init();
+      swiper.navigation.update();
     }
-  }, [isBeginning, isEnd]);
+  }, [movieList]);
+
+  useEffect(() => {
+    const swiper = swiperRef.current.swiper;
+    
+    if (swiper) {
+      swiper.on('slideChange', () => {
+        setIsBeginning(swiper.isBeginning);
+        setIsEnd(swiper.isEnd);
+      });
+    }
+  }, []);
 
   return (
     <SwiperWrapper>
       <StyledSwiper
+        ref={swiperRef}
         spaceBetween={10}
         slidesPerView={2}
         breakpoints={{
@@ -96,14 +110,6 @@ const MovieSwiper = ({ movieList }) => {
         }}
         modules={[Navigation]}
         onInit={(swiper) => {
-          swiper.params.navigation.prevEl = prevRef.current;
-          swiper.params.navigation.nextEl = nextRef.current;
-          swiper.navigation.init();
-          swiper.navigation.update();
-          setIsBeginning(swiper.isBeginning);
-          setIsEnd(swiper.isEnd);
-        }}
-        onSlideChange={(swiper) => {
           setIsBeginning(swiper.isBeginning);
           setIsEnd(swiper.isEnd);
         }}

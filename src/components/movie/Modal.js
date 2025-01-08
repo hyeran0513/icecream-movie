@@ -18,9 +18,10 @@ const ModalContainer = styled.div`
 `;
 
 const ModalContent = styled.div`
+  margin: 20px;
+  padding: 20px;
   background-color: var(--primary-bg-color);
   color: var(--primary-text-color);
-  padding: 20px;
   border-radius: 8px;
   max-width: 500px;
   width: 100%;
@@ -77,6 +78,8 @@ const ModalBody = styled.div`
   flex-grow: 1;
   padding-top: 20px;
   font-size: 1rem;
+   max-height: 60vh;
+  overflow-y: auto;
 `;
 
 const CloseButton = styled.button`

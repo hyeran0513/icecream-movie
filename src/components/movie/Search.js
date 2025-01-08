@@ -19,7 +19,7 @@ const SearchContainer = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('/images/bg/bg_banner.png') no-repeat center / cover;
+    background: url('${process.env.PUBLIC_URL}/images/bg/bg_banner.png') no-repeat center / cover;
     z-index: -1;
     opacity: 0.5;
   }

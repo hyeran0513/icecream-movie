@@ -151,7 +151,7 @@ const Header = ({ toggleTheme, toggleSidebar }) => {
     <HeaderContainer scrolled={scrolled}>
       <HeaderInner>
         <Logo to="/">
-          <LogoImage src="/images/logo.svg" alt="" />
+          <LogoImage src={`${process.env.PUBLIC_URL}/images/logo.svg`} alt="" />
         </Logo>
 
         {!isMobile ? (

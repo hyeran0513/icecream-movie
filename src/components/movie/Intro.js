@@ -57,7 +57,7 @@ const IntroSubTitle = styled.div`
 const Intro = () => {
   return (
     <IntroContainer>
-      <IntroCaracter src="/images/character/character_headset.png" alt="" />
+      <IntroCaracter src={`${process.env.PUBLIC_URL}/images/character/character_headset.png`} alt="" />
       <FcAdvertising />
 
       <IntroText>

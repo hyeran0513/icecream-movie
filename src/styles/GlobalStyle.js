@@ -1,14 +1,18 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
   :root {
     --font-size: 16px;
-    --primary-color: #DA4198;
-    --primary-darken-color: #C44389;
-    --secondary-color: #4141DA;
-    --primary-bg-color: #222;
-    --primary-text-color: #fff;
-    --primary-border-color: #fff;
+    --primary-color: ${({ theme }) => theme.colors.primary};
+    --primary-darken-color: ${({ theme }) => theme.colors.primaryDark};
+    --secondary-color: ${({ theme }) => theme.colors.secondary};
+    --primary-bg-color: ${({ theme }) => theme.colors.primaryBg};
+    --primary-text-color: ${({ theme }) => theme.colors.primaryText};
+    --primary-border-color: ${({ theme }) => theme.colors.primaryBorder};
+    --tab-bg-color: ${({ theme }) => theme.colors.tabBg};
+    --swiper-bg-color: ${({ theme }) => theme.colors.swiperBg};
+    --swiper-hover-bg-color: ${({ theme }) => theme.colors.swiperHoverBg};
+    --swiper-icon-color: ${({ theme }) => theme.colors.swiperIcon};
   }
 
   * {
@@ -28,6 +32,7 @@ const GlobalStyle = createGlobalStyle`
     background-color: var(--primary-bg-color); 
     color: var(--primary-text-color);
     min-height: 100vh;
+    transition: background-color 0.3s ease;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -86,6 +91,15 @@ const GlobalStyle = createGlobalStyle`
     background-color: var(--primary-bg-color);
     color: var(--primary-text-color);
     border: 1px solid var(--primary-border-color);
+  }
+
+  .ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-break: keep-all
   }
 `;
 

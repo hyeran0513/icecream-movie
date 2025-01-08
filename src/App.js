@@ -1,10 +1,11 @@
+import React, { useState, useEffect } from "react";
 import GlobalStyle from "./styles/GlobalStyle";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import DefaultLayout from "./layouts/default";
 import SubLayout from "./layouts/subLayout";
 import Home from "./pages/Home";
 import Movie from "./pages/Movie";
-import theme from "./styles/Theme";
+import { lightTheme, darkTheme } from "./styles/Theme";
 import { ThemeProvider } from "styled-components";
 import SearchResult from "./pages/SearchResult";
 import NowPlaying from "./pages/NowPlaying";
@@ -13,8 +14,22 @@ import TopRate from "./pages/TopRate";
 import Popular from "./pages/Popular";
 
 function App() {
+   const [theme, setTheme] = useState("light");
+
+   useEffect(() => {
+     const savedTheme = localStorage.getItem("theme") || "light";
+     setTheme(savedTheme);
+   }, []);
+ 
+   // 테마 토글 함수
+   const toggleTheme = () => {
+     const newTheme = (theme === "light") ? "dark" : "light";
+     setTheme(newTheme);
+     localStorage.setItem("theme", newTheme);
+   };
+
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
       <div className="App">
         <GlobalStyle />
 
@@ -23,7 +38,7 @@ function App() {
             <Route
               path="/"
               element={
-                <DefaultLayout>
+                <DefaultLayout toggleTheme={toggleTheme}>
                   <Home />
                 </DefaultLayout>
               }
@@ -32,7 +47,7 @@ function App() {
             <Route
               path="/search"
               element={
-                <DefaultLayout>
+                <DefaultLayout toggleTheme={toggleTheme}>
                   <SearchResult />
                 </DefaultLayout>
               }
@@ -41,7 +56,7 @@ function App() {
             <Route
               path="/popular"
               element={
-                <SubLayout>
+                <SubLayout toggleTheme={toggleTheme}>
                   <Popular />
                 </SubLayout>
               }
@@ -50,7 +65,7 @@ function App() {
             <Route
               path="/nowplaying"
               element={
-                <SubLayout>
+                <SubLayout toggleTheme={toggleTheme}>
                   <NowPlaying />
                 </SubLayout>
               }
@@ -59,7 +74,7 @@ function App() {
             <Route
               path="/upcoming"
               element={
-                <SubLayout>
+                <SubLayout toggleTheme={toggleTheme}>
                   <Upcoming />
                 </SubLayout>
               }
@@ -68,7 +83,7 @@ function App() {
             <Route
               path="/topRate"
               element={
-                <SubLayout>
+                <SubLayout toggleTheme={toggleTheme}>
                   <TopRate />
                 </SubLayout>
               }
@@ -77,7 +92,7 @@ function App() {
             <Route
               path="/movie"
               element={
-                <SubLayout>
+                <SubLayout toggleTheme={toggleTheme}>
                   <Movie />
                 </SubLayout>
               }

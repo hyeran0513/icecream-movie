@@ -15,10 +15,10 @@ const LayoutMain = styled.main`
   padding-bottom: 20px;
 `;
 
-const SubLayout = ({ children }) => {
+const SubLayout = ({ children, toggleTheme }) => {
   return (
     <LayoutContainer>
-      <Header />
+      <Header toggleTheme={toggleTheme} />
       
       <LayoutMain>
         {children}

@@ -16,7 +16,7 @@ const HeaderContainer = styled.header`
   ${(props) =>
     props.scrolled &&
     css`
-      background-color: #222;
+      background-color: var(--primary-bg-color);
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06), 0 4px 8px rgba(0, 0, 0, 0.1);
     `}
 `;
@@ -55,9 +55,24 @@ const Utility = styled.div`
   margin-left: auto;
 `;
 
-const Header = () => {
+const ToggleTheme = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: var(--primary-bg-color);
+  }
+`;
+
+const Header = ({ toggleTheme }) => {
   const [scrolled, setScrolled] = useState(false);
 
+  // 스크롤 핸들러
   const handleScroll = () => {
     if (window.scrollY > 80) {
       setScrolled(true);
@@ -90,7 +105,9 @@ const Header = () => {
         </Gnb>
 
         <Utility>
-          <BiMoon />
+          <ToggleTheme type="button" onClick={toggleTheme}>
+            {localStorage.getItem("theme") === 'light' ? <BiMoon /> : <BiSun />}
+          </ToggleTheme>
         </Utility>
       </HeaderInner>
     </HeaderContainer>

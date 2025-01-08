@@ -45,6 +45,7 @@ const CardInfo = styled.div`
   visibility: hidden;
   transform: translateY(20%);
   transition: transform 0.3s ease, opacity 0.3s ease;
+  color: #fff;
 `;
 
 const CardButtonWrapper = styled.div`
@@ -68,6 +69,7 @@ const CardDetailButton = styled.button`
   border-radius: 6px;
   z-index: 10;
   transition: background-color 0.3s ease;
+  color: #fff;
 
   &:hover {
     background-color: rgba(218, 65, 152, 0.8);
@@ -106,13 +108,7 @@ const CardTitle = styled.h2`
   font-weight: bold;
 `;
 
-const CardOverview = styled.div`
-  ${({ ellipsis, theme }) =>
-    ellipsis &&
-    css`
-      ${theme.ellipsis}
-    `}
-`;
+const CardOverview = styled.div``;
 
 const Tab = styled.ul`
   display: flex;
@@ -123,7 +119,7 @@ const Tab = styled.ul`
 
 const TabItem = styled.li`
   padding: 4px 10px;
-  background-color: #333;
+  background-color: var(--tab-bg-color);
   border-radius: 4px;
   font-size: 0.8rem;
 `;
@@ -146,9 +142,10 @@ const ShowReviewButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #222;
+  background-color: var(--primary-bg-color);
   border: 1px solid #ccc;
   border-radius: 30px;
+  color: var(--primary-text-color);
 
   svg {
     width: 24px;
@@ -268,7 +265,7 @@ const Card = ({ movie }) => {
 
         <CardInfo>
           <CardTitle>{movie.title}</CardTitle>
-          <CardOverview ellipsis>{movie.overview}</CardOverview>
+          <CardOverview className="ellipsis">{movie.overview}</CardOverview>
         </CardInfo>
       </CardItem>
 

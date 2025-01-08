@@ -17,8 +17,8 @@ const NavigationButton = styled.div`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
+  background-color: var(--swiper-bg-color);
+  color: var(--swiper-icon-color);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -27,15 +27,14 @@ const NavigationButton = styled.div`
   cursor: pointer;
   border-radius: 50%;
   z-index: 10;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
-  border: 1px solid rgba(0, 0, 0, 0.6);
+  transition: background-color 0.3s ease;
   opacity: ${(props) => (props.disabled ? 0 : 1)};
   pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
   visibility: ${(props) => (props.disabled ? "hidden" : "visible")};
-
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06), 0 4px 8px rgba(0, 0, 0, 0.1);
+  
   &:hover {
-    background-color: #000;
-    border-color: #fff;
+    background-color: var(--swiper-hover-bg-color);
   }
 
   svg {

@@ -49,6 +49,11 @@ const SearchInputWrapper = styled.div`
 const SearchInput = styled.input`
   flex: 1;
   padding: 20px;
+  color: #fff;
+  
+  &::placeholder {
+    color: #fff;
+  }
 `;
 
 const SearchButton = styled.button`
@@ -60,6 +65,7 @@ const SearchButton = styled.button`
 
   svg {
     font-size: 1.4rem;
+    color: #fff;
   }
 `;
 

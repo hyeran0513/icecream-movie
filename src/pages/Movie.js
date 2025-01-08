@@ -37,6 +37,7 @@ const ButtonMore = styled.button`
   background-color: var(--primary-color);
   border-radius: 8px;
   transition: background-color 0.3s ease;
+  color: #fff;
 
   &:hover {
     background-color: var(--primary-darken-color);

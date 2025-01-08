@@ -76,7 +76,7 @@ const NowPlaying = () => {
 
   return (
     <>
-      <Banner title={"인기 영화"} />
+      <Banner title={"인기 영화"} type="popular" />
 
       <MoviePage>
         <MovieList>

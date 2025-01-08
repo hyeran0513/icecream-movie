@@ -37,7 +37,7 @@ const IntroSubTitle = styled.div`
 const Intro = () => {
   return (
     <IntroContainer>
-      <IntroCaracter src="/images/character.png" alt="" />
+      <IntroCaracter src="/images/character/character_headset.png" alt="" />
       <FcAdvertising />
 
       <IntroText>

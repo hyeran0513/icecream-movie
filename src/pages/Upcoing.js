@@ -76,7 +76,7 @@ const Upcoming = () => {
 
   return (
     <>
-      <Banner title={"계봉 예정 영화"} />
+      <Banner title={"계봉 예정 영화"} type="upcoming" />
 
       <MoviePage>
         <MovieList>

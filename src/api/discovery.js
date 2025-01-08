@@ -3,7 +3,7 @@ import axios from "axios";
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
-export const getDiscovery = async (genreId, page = 1) => {
+export const getDiscovery = async ({filterParams}, page = 1) => {
   try {
     const params = {
       api_key: API_KEY,
@@ -11,8 +11,12 @@ export const getDiscovery = async (genreId, page = 1) => {
       page,
     };
 
-    if (genreId) {
-      params.with_genres = genreId;
+    if (filterParams.genre) {
+      params.with_genres = filterParams.genre;
+    }
+
+    if (filterParams.sort) {
+      params.sort_by = filterParams.sort;
     }
 
     const response = await axios.get(`${BASE_URL}/discover/movie`, {

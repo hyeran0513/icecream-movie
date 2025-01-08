@@ -13,6 +13,7 @@ const GlobalStyle = createGlobalStyle`
     --swiper-bg-color: ${({ theme }) => theme.colors.swiperBg};
     --swiper-hover-bg-color: ${({ theme }) => theme.colors.swiperHoverBg};
     --swiper-icon-color: ${({ theme }) => theme.colors.swiperIcon};
+    --card-poster-bg-color: ${({ theme }) => theme.colors.cardPosterBg};
   }
 
   * {

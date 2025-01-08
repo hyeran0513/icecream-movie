@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Modal from "./Modal";
 import { getDetail } from "../../api/detail";
 import { getReview } from "../../api/review";
-import { BiSolidUserCircle, BiChevronDown } from "react-icons/bi";
+import { BiSolidUserCircle, BiChevronDown, BiSolidImageAlt } from "react-icons/bi";
 
 const CardPosterWrapper = styled.div`
   position: relative;
@@ -27,6 +27,20 @@ const CardPoster = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: ${(props) => (props.isError ? "none" : "block")};
+`;
+
+const CardDefaultPoster = styled.div`
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: var(--card-poster-bg-color);
+  display: ${(props) => (props.isError ? "flex" : "none")};
+
+  svg {
+    font-size: 60px;
+  }
 `;
 
 const CardInfo = styled.div`
@@ -230,6 +244,7 @@ const Card = ({ movie }) => {
   const [movieDetail, setMovieDetail] = useState(null);
   const [movieReview, setMovieReview] = useState([]);
   const [showReview, setShowReview] = useState(false);
+  const [isPosterError, setIsPosterError] = useState(false);
 
   const fetchMovieData = async () => {
     if (!movie || !movie.id) return;
@@ -272,6 +287,10 @@ const Card = ({ movie }) => {
     return <p>Error: {error}</p>;
   }
 
+  const handleError = () => {
+    setIsPosterError(true);
+  };
+
   return (
     <>
       <CardItem key={movie.id}>
@@ -285,7 +304,12 @@ const Card = ({ movie }) => {
           <CardPoster
             src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
             alt={movie.title}
+            onError={handleError}
+            isError={isPosterError}
           />
+          <CardDefaultPoster isError={isPosterError}>
+            <BiSolidImageAlt />
+          </CardDefaultPoster>
         </CardPosterWrapper>
 
         <CardInfo>

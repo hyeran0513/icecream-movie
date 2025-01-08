@@ -160,6 +160,7 @@ const Header = ({ toggleTheme, toggleSidebar }) => {
             <NavItem to="/nowPlaying">현재 상영 중</NavItem>
             <NavItem to="/upcoming">개봉 예정</NavItem>
             <NavItem to="/topRate">높은 평점</NavItem>
+            <NavItem to="/movie">사용자 선호</NavItem>
           </Gnb>
         ) : null}
 

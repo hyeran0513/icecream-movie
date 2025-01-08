@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import GlobalStyle from "./styles/GlobalStyle";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import DefaultLayout from "./layouts/default";
 import SubLayout from "./layouts/subLayout";
 import Home from "./pages/Home";
@@ -14,25 +14,24 @@ import TopRate from "./pages/TopRate";
 import Popular from "./pages/Popular";
 
 function App() {
-   const [theme, setTheme] = useState("light");
-   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [theme, setTheme] = useState("light");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-   const toggleSidebar = () => {
-    console.log("click!", isSidebarOpen);
-     setIsSidebarOpen(!isSidebarOpen);
-   };
-   
-   useEffect(() => {
-     const savedTheme = localStorage.getItem("theme") || "light";
-     setTheme(savedTheme);
-   }, []);
- 
-   // 테마 토글 함수
-   const toggleTheme = () => {
-     const newTheme = (theme === "light") ? "dark" : "light";
-     setTheme(newTheme);
-     localStorage.setItem("theme", newTheme);
-   };
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") || "light";
+    setTheme(savedTheme);
+  }, []);
+
+  // 테마 토글 함수
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+  };
 
   return (
     <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
@@ -49,7 +48,6 @@ function App() {
                 </DefaultLayout>
               }
             />
-
             <Route
               path="/search"
               element={
@@ -58,7 +56,6 @@ function App() {
                 </DefaultLayout>
               }
             />
-
             <Route
               path="/popular"
               element={
@@ -67,7 +64,6 @@ function App() {
                 </SubLayout>
               }
             />
-
             <Route
               path="/nowplaying"
               element={
@@ -76,7 +72,6 @@ function App() {
                 </SubLayout>
               }
             />
-
             <Route
               path="/upcoming"
               element={
@@ -85,7 +80,6 @@ function App() {
                 </SubLayout>
               }
             />
-
             <Route
               path="/topRate"
               element={
@@ -94,7 +88,6 @@ function App() {
                 </SubLayout>
               }
             />
-
             <Route
               path="/movie"
               element={

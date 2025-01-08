@@ -8,6 +8,8 @@ import { ThemeProvider } from "styled-components";
 import SearchResult from "./pages/SearchResult";
 import NowPlaying from "./pages/NowPlaying";
 import Upcoming from "./pages/Upcoing";
+import TopRate from "./pages/TopRate";
+import Popular from "./pages/Popular";
 
 function App() {
   return (
@@ -45,6 +47,24 @@ function App() {
             />
 
             <Route
+              path="/popular"
+              element={
+                <DefaultLayout>
+                  <Popular />
+                </DefaultLayout>
+              }
+            />
+
+            <Route
+              path="/nowplaying"
+              element={
+                <DefaultLayout>
+                  <NowPlaying />
+                </DefaultLayout>
+              }
+            />
+
+            <Route
               path="/nowplaying"
               element={
                 <DefaultLayout>
@@ -58,6 +78,15 @@ function App() {
               element={
                 <DefaultLayout>
                   <Upcoming />
+                </DefaultLayout>
+              }
+            />
+
+            <Route
+              path="/topRate"
+              element={
+                <DefaultLayout>
+                  <TopRate />
                 </DefaultLayout>
               }
             />

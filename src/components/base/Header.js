@@ -57,8 +57,10 @@ const Header = () => {
         </Logo>
 
         <Gnb>
-          <NavItem to="/nowPlaying">현재 상영 중인 영화</NavItem>
-          <NavItem to="/upcoming">개봉 예정 영화</NavItem>
+          <NavItem to="/popular">인기</NavItem>
+          <NavItem to="/nowPlaying">현재 상영 중</NavItem>
+          <NavItem to="/upcoming">개봉 예정</NavItem>
+          <NavItem to="/topRate">높은 평점</NavItem>
           <NavItem to="/movie">장르별 영화</NavItem>
         </Gnb>
 

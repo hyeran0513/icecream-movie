@@ -89,7 +89,7 @@ const CloseButton = styled.button`
 const Modal = ({ isOpen, onClose, movie, children }) => {
   // usePortal로 portal-root 가져오기
   const portalRoot = usePortal('modal-root');
-console.log(JSON.stringify(movie));
+  
   return ReactDOM.createPortal(
     <ModalContainer isOpen={isOpen} onClick={onClose}>
       <ModalContent onClick={(e) => e.stopPropagation()}>

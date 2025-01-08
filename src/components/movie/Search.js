@@ -110,7 +110,7 @@ const Search = () => {
     <SearchContainer>
       <SearchBox>
         <SearchTitle>어떤 영화를 찾고 계시나요?<br />
-          원하는 영화 제목을 입력하여 검색해 보세요!</SearchTitle>
+          원하는 영화 제목을 검색해 보세요!</SearchTitle>
 
         <SearchInputWrapper>
           <SearchInput

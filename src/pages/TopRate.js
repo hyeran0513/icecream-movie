@@ -100,7 +100,7 @@ const NowPlaying = () => {
 
   return (
     <>
-      <Banner title={"평점 높은 영화"} type="topRate" />
+      <Banner title={"평점 높은 영화"} />
 
       <MoviePage>
         <MovieList>

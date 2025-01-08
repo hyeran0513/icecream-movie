@@ -1,6 +1,7 @@
 import GlobalStyle from "./styles/GlobalStyle";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import DefaultLayout from "./layouts/default";
+import SubLayout from "./layouts/subLayout";
 import Home from "./pages/Home";
 import Movie from "./pages/Movie";
 import theme from "./styles/Theme";
@@ -29,15 +30,6 @@ function App() {
             />
 
             <Route
-              path="/movie"
-              element={
-                <DefaultLayout>
-                  <Movie />
-                </DefaultLayout>
-              }
-            />
-
-            <Route
               path="/search"
               element={
                 <DefaultLayout>
@@ -49,45 +41,45 @@ function App() {
             <Route
               path="/popular"
               element={
-                <DefaultLayout>
+                <SubLayout>
                   <Popular />
-                </DefaultLayout>
+                </SubLayout>
               }
             />
 
             <Route
               path="/nowplaying"
               element={
-                <DefaultLayout>
+                <SubLayout>
                   <NowPlaying />
-                </DefaultLayout>
-              }
-            />
-
-            <Route
-              path="/nowplaying"
-              element={
-                <DefaultLayout>
-                  <NowPlaying />
-                </DefaultLayout>
+                </SubLayout>
               }
             />
 
             <Route
               path="/upcoming"
               element={
-                <DefaultLayout>
+                <SubLayout>
                   <Upcoming />
-                </DefaultLayout>
+                </SubLayout>
               }
             />
 
             <Route
               path="/topRate"
               element={
-                <DefaultLayout>
+                <SubLayout>
                   <TopRate />
-                </DefaultLayout>
+                </SubLayout>
+              }
+            />
+
+            <Route
+              path="/movie"
+              element={
+                <SubLayout>
+                  <Movie />
+                </SubLayout>
               }
             />
           </Routes>

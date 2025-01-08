@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { css } from "styled-components";
 import Modal from "./Modal";
 import { getDetail } from "../../api/detail";
+import { getReview } from "../../api/review";
+import { BiSolidUserCircle, BiChevronDown } from "react-icons/bi";
 
 const CardPosterWrapper = styled.div`
   position: relative;
@@ -45,10 +47,36 @@ const CardInfo = styled.div`
   transition: transform 0.3s ease, opacity 0.3s ease;
 `;
 
+const CardButtonWrapper = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 10;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+`;
+
+const CardDetailButton = styled.button`
+  padding: 8px 20px;
+  background-color: rgba(218, 65, 152, 0.5);
+  border: 1px solid var(--primary-color);
+  border-radius: 6px;
+  z-index: 10;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: rgba(218, 65, 152, 0.8);
+  }
+`;
+
 const CardItem = styled.li`
   position: relative;
   overflow: hidden;
-  cursor: pointer;
   border-radius: 8px;
 
   &:hover {
@@ -63,6 +91,11 @@ const CardItem = styled.li`
         opacity: 1;
         visibility: visible;
       }
+    }
+
+    ${CardButtonWrapper} {
+      opacity: 1;
+      visibility: visible;
     }
   }
 `;
@@ -92,34 +125,121 @@ const TabItem = styled.li`
   padding: 4px 10px;
   background-color: #333;
   border-radius: 4px;
+  font-size: 0.8rem;
+`;
+
+const MovieOverview = styled.p``;
+
+const ReviewContainer = styled.div`
+  position: relative;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #ccc;
+`;
+
+const ShowReviewButton = styled.button`
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  width: 80px;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #222;
+  border: 1px solid #ccc;
+  border-radius: 30px;
+
+  svg {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+  }
+
+  &.show {
+    svg {
+      transform: rotate(-180deg);
+    }
+  }
+`;
+
+const ReviewList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const ReviewItem = styled.li``;
+
+const ReviewAuthor = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+`;
+
+const ReviewAvatar = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const ReviewUserName = styled.div`
+  font-size: 0.8rem;
+`;
+
+const ReviewContent = styled.p`
+  margin-bottom: 0.5rem;
+`;
+
+const ReviewDate = styled.p`
+  text-align: end;
+  font-size: 0.8rem;
 `;
 
 const Card = ({ movie }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [movieDetail, setMovieDetail] = useState(null);
+  const [movieReview, setMovieReview] = useState([]);
+  const [showReview, setShowReview] = useState(false);
 
-  const openModal = async () => {
+  const fetchMovieData = async () => {
     if (!movie || !movie.id) return;
 
     setLoading(true);
-
     try {
       const detailData = await getDetail({ movieId: movie.id });
-      console.log(detailData);
+      const reviewData = await getReview({ movieId: movie.id });
+
       setMovieDetail(detailData);
-      setIsModalOpen(true);
+      setMovieReview(reviewData);
     } catch (err) {
       setError(err.message);
-      console.error("에러:", err);
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    fetchMovieData();
+  }, [movie]);
+
+  const openDetailModal = () => {
+    setIsModalOpen(true);
+  };
+
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const handleShowReview = () => {
+    setShowReview((prev) => !prev);
   };
 
   if (loading) {
@@ -132,7 +252,13 @@ const Card = ({ movie }) => {
 
   return (
     <>
-      <CardItem key={movie.id} onClick={openModal}>
+      <CardItem key={movie.id}>
+        <CardButtonWrapper>
+          <CardDetailButton onClick={openDetailModal}>
+            상세 보기
+          </CardDetailButton>
+        </CardButtonWrapper>
+
         <CardPosterWrapper>
           <CardPoster
             src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
@@ -146,25 +272,74 @@ const Card = ({ movie }) => {
         </CardInfo>
       </CardItem>
 
+      {/* 상세 보기 모달 */}
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
-        movie={movieDetail ? movieDetail : ''}
+        movie={movieDetail || ""}
+        review={movieReview || []}
       >
         {movieDetail ? (
-          <div>
-            <p>{movieDetail.overview ? movieDetail.overview : '해당 영화에 대한 설명이 없습니다.'}</p>
+          <>
+            <MovieOverview>
+              {movieDetail.overview || "해당 영화에 대한 설명이 없습니다."}
+            </MovieOverview>
 
-            {movieDetail.genres.length > 0 ? (
+            {movieDetail.genres.length > 0 && (
               <Tab>
                 {movieDetail.genres.map((genre) => (
                   <TabItem key={genre.id}>{genre.name}</TabItem>
                 ))}
               </Tab>
-            ) : (
-              <></>
             )}
-          </div>
+
+            <ReviewContainer>
+              <ShowReviewButton
+                type="button"
+                onClick={handleShowReview}
+                className={showReview ? "show" : ""}
+              >
+                <BiChevronDown />
+              </ShowReviewButton>
+
+              {showReview && (
+                <ReviewList>
+                  {movieReview.length ? (
+                    movieReview.map((review) => (
+                      <ReviewItem key={review.id}>
+                        <ReviewAuthor>
+                          <ReviewAvatar>
+                            {review.author_details.avatar_path ? (
+                              <img
+                                src={`https://www.themoviedb.org/t/p/w24${review.author_details.avatar_path}`}
+                                alt={review.author_details.username}
+                                style={{ borderRadius: "50%" }}
+                              />
+                            ) : (
+                              <BiSolidUserCircle />
+                            )}
+                          </ReviewAvatar>
+
+                          <ReviewUserName>
+                            {review.author_details.name ||
+                              review.author_details.username}
+                          </ReviewUserName>
+                        </ReviewAuthor>
+
+                        <ReviewContent>{review.content}</ReviewContent>
+
+                        <ReviewDate>
+                          {new Date(review.created_at).toLocaleDateString()}
+                        </ReviewDate>
+                      </ReviewItem>
+                    ))
+                  ) : (
+                    <div>리뷰가 없습니다.</div>
+                  )}
+                </ReviewList>
+              )}
+            </ReviewContainer>
+          </>
         ) : (
           <p>상세 정보를 불러오는 중...</p>
         )}

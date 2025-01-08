@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getNowPlaying } from "../api/nowPlaying";
 import styled from "styled-components";
 import Card from "../components/movie/Card";
+import Banner from "../components/movie/Banner";
 
 const MoviePage = styled.div`
   margin: 0 auto;
@@ -74,21 +75,25 @@ const NowPlaying = () => {
   }
 
   return (
-    <MoviePage>
-      <MovieList>
-        {movieList.map((movie) => (
-          <Card key={movie.id} movie={movie} />
-        ))}
-      </MovieList>
+    <>
+      <Banner title={"인기 영화"} />
 
-      {movieList.length >= 20 && (
-        <ButtonWrapper>
-          <ButtonMore type="button" onClick={handleLoadMore}>
-            더 보기
-          </ButtonMore>
-        </ButtonWrapper>
-      )}
-    </MoviePage>
+      <MoviePage>
+        <MovieList>
+          {movieList.map((movie) => (
+            <Card key={movie.id} movie={movie} />
+          ))}
+        </MovieList>
+
+        {movieList.length >= 20 && (
+          <ButtonWrapper>
+            <ButtonMore type="button" onClick={handleLoadMore}>
+              더 보기
+            </ButtonMore>
+          </ButtonWrapper>
+        )}
+      </MoviePage>
+    </>
   );
 };
 

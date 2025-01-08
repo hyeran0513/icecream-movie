@@ -1,18 +1,25 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from "styled-components";
 import { BiSun, BiMoon  } from "react-icons/bi";
 
 const HeaderContainer = styled.header`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   padding: 10px 0;
   width: 100%;
   height: 80px;
   z-index: 101;
-`;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 
+  ${(props) =>
+    props.scrolled &&
+    css`
+      background-color: #222;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06), 0 4px 8px rgba(0, 0, 0, 0.1);
+    `}
+`;
 const HeaderInner = styled.div`
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -49,8 +56,26 @@ const Utility = styled.div`
 `;
 
 const Header = () => {
+  const [scrolled, setScrolled] = useState(false);
+
+  const handleScroll = () => {
+    if (window.scrollY > 80) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <HeaderContainer>
+    <HeaderContainer scrolled={scrolled}>
       <HeaderInner>
         <Logo to="/">
           <LogoImage src="/images/logo.svg" alt="" />

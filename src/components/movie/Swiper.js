@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -29,6 +29,9 @@ const NavigationButton = styled.div`
   z-index: 10;
   transition: background-color 0.3s ease, border-color 0.3s ease;
   border: 1px solid rgba(0, 0, 0, 0.6);
+  opacity: ${(props) => (props.disabled ? 0 : 1)};
+  pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
+  visibility: ${(props) => (props.disabled ? "hidden" : "visible")};
 
   &:hover {
     background-color: #000;
@@ -51,6 +54,18 @@ const NavigationButton = styled.div`
 const MovieSwiper = ({ movieList }) => {
   const prevRef = useRef();
   const nextRef = useRef();
+  const [isBeginning, setIsBeginning] = useState(true);
+  const [isEnd, setIsEnd] = useState(false);
+
+  useEffect(() => {
+    if (prevRef.current) {
+      prevRef.current.disabled = isBeginning;
+    }
+    
+    if (nextRef.current) {
+      nextRef.current.disabled = isEnd;
+    }
+  }, [isBeginning, isEnd]);
 
   return (
     <SwiperWrapper>
@@ -63,6 +78,12 @@ const MovieSwiper = ({ movieList }) => {
           swiper.params.navigation.nextEl = nextRef.current;
           swiper.navigation.init();
           swiper.navigation.update();
+          setIsBeginning(swiper.isBeginning);
+          setIsEnd(swiper.isEnd);
+        }}
+        onSlideChange={(swiper) => {
+          setIsBeginning(swiper.isBeginning);
+          setIsEnd(swiper.isEnd);
         }}
       >
         {movieList.map((movie) => (
@@ -72,11 +93,11 @@ const MovieSwiper = ({ movieList }) => {
         ))}
       </StyledSwiper>
 
-      <NavigationButton ref={prevRef} className="prev">
+      <NavigationButton ref={prevRef} className="prev" disabled={isBeginning}>
         <BiChevronLeft />
       </NavigationButton>
       
-      <NavigationButton ref={nextRef} className="next">
+      <NavigationButton ref={nextRef} className="next" disabled={isEnd}>
         <BiChevronRight />
       </NavigationButton>
     </SwiperWrapper>

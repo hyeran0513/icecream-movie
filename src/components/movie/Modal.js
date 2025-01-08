@@ -1,8 +1,8 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import styled from "styled-components";
 import { BiX } from "react-icons/bi";
 import usePortal from "../../hooks/usePortal";
-import ReactDOM from 'react-dom';
 import { BiSolidStar, BiSolidAlarm } from "react-icons/bi";
 
 const ModalContainer = styled.div`
@@ -12,7 +12,7 @@ const ModalContainer = styled.div`
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
-  display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
+  display: ${({ isOpen }) => (isOpen ? "flex" : "none")}; /* isOpen을 ModalContainer에서만 처리 */
   justify-content: center;
   align-items: center;
   z-index: 1000;
@@ -56,7 +56,7 @@ const ModalVote = styled.div`
   align-items: center;
   gap: 0.3rem;
   font-size: 1rem;
-  
+
   svg {
     color: var(--primary-color);
   }
@@ -75,7 +75,7 @@ const ModalRuntime = styled.div`
 
 const ModalBody = styled.div`
   flex-grow: 1;
-  padding: 20px 0;
+  padding-top: 20px;
   font-size: 1rem;
 `;
 
@@ -86,21 +86,31 @@ const CloseButton = styled.button`
   cursor: pointer;
 `;
 
-const Modal = ({ isOpen, onClose, movie, children }) => {
-  // usePortal로 portal-root 가져오기
-  const portalRoot = usePortal('modal-root');
-  
+const Modal = ({ isOpen, onClose, movie, review, children }) => {
+  const portalRoot = usePortal("modal-root");
+
   return ReactDOM.createPortal(
     <ModalContainer isOpen={isOpen} onClick={onClose}>
       <ModalContent onClick={(e) => e.stopPropagation()}>
         <ModalHeader>
           <ModalHeaderInfo>
-            <ModalTitle>{movie.title}</ModalTitle>
-            
-            <ModalMeta>
-              <ModalVote><BiSolidStar />{movie.vote_average}</ModalVote>
-              <ModalRuntime><BiSolidAlarm /> 상영 시간 {movie.runtime}분</ModalRuntime>
-            </ModalMeta>
+            {movie && movie.title ? (
+              <ModalTitle>{movie.title}</ModalTitle>
+            ) : (
+              <ModalTitle>영화 정보 없음</ModalTitle>
+            )}
+
+            {movie && (movie.vote_average || movie.vote_average === 0) && (movie.runtime || movie.runtime === 0) && (
+              <ModalMeta>
+                <ModalVote>
+                  <BiSolidStar />
+                  {movie.vote_average}
+                </ModalVote>
+                <ModalRuntime>
+                  <BiSolidAlarm /> 상영 시간 {movie.runtime}분
+                </ModalRuntime>
+              </ModalMeta>
+            )}
           </ModalHeaderInfo>
 
           <CloseButton onClick={onClose}>
@@ -111,7 +121,7 @@ const Modal = ({ isOpen, onClose, movie, children }) => {
         <ModalBody>{children}</ModalBody>
       </ModalContent>
     </ModalContainer>,
-    portalRoot // 포탈의 root를 container에 렌더링
+    portalRoot
   );
 };
 

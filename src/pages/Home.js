@@ -7,6 +7,7 @@ import MovieSwiper from "../components/movie/Swiper";
 import styled from "styled-components";
 import { FcFilm, FcIdea, FcCloseUpMode, FcPlanner } from "react-icons/fc";
 import Intro from "../components/movie/Intro";
+import { useQuery } from "@tanstack/react-query";
 
 const MoviePage = styled.div`
   display: flex;
@@ -42,78 +43,45 @@ const MovieSectionTitle = styled.p`
 `;
 
 const Home = () => {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [popularMovieList, setPopularMovieList] = useState([]);
-  const [topRateMovieList, setTopRateMovieList] = useState([]);
-  const [nowPlayingMovieList, setNowPlayingMovieList] = useState([]);
-  const [upcomingMovieList, setUpcomingMovieList] = useState([]);
-
-  // 인기
-  const fetchPopular = async () => {
-    try {
-      const popularData = await getPopularMovies();
-      setPopularMovieList(popularData);
-    } catch (err) {
-      setError(err.message);
-      console.error("에러:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // 인기 영화
+  const { data: popularData = [], isLoading: popularLoading, isError: popularError, error: popularErrorMessage } = useQuery({
+    queryKey: ['popularData'],
+    queryFn: () => getPopularMovies(1),
+  });
 
   // 현재 상영 중
-  const fetchNowPlaying = async () => {
-    try {
-      const nowPlayingData = await getNowPlaying();
-      setNowPlayingMovieList(nowPlayingData);
-    } catch (err) {
-      setError(err.message);
-      console.error("에러:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data: nowPlayingData = [], isLoading: nowPlayingLoading, isError: nowPlayingError, error: nowPlayingErrorMessage } = useQuery({
+    queryKey: ['nowPlayingData'],
+    queryFn: () => getNowPlaying(1),
+  });
 
   // 개봉 예정
-  const fetchUpcoming = async () => {
-    try {
-      const upcomingData = await getUpcoming();
-      setUpcomingMovieList(upcomingData);
-    } catch (err) {
-      setError(err.message);
-      console.error("에러:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data: upcomingData = [], isLoading: upcomingLoading, isError: upcomingError, error: upcomingErrorMessage } = useQuery({
+    queryKey: ['upcomingData'],
+    queryFn: () => getUpcoming(1),
+  });
 
   // 높은 평점
-  const fetchTopRate = async () => {
-    try {
-      const topRateData = await getTopRateMovies();
-      setTopRateMovieList(topRateData);
-    } catch (err) {
-      setError(err.message);
-      console.error("에러:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data: topRateData = [], isLoading: topRateLoading, isError: topRateError, error: topRateErrorMessage } = useQuery({
+    queryKey: ['topRateData'],
+    queryFn: () => getTopRateMovies(1),
+  });
 
-  useEffect(() => {
-    fetchPopular();
-    fetchNowPlaying();
-    fetchUpcoming();
-    fetchTopRate();
-  }, []);
-
-  if (loading) {
+  // 로딩 상태 처리
+  if (popularLoading || nowPlayingLoading || upcomingLoading || topRateLoading) {
     return <p>Loading...</p>;
   }
 
-  if (error) {
-    return <p>Error: {error}</p>;
+  // 에러 상태 처리
+  if (popularError || nowPlayingError || upcomingError || topRateError) {
+    return (
+      <div>
+        {popularError && <p>인기 영화: {popularErrorMessage.message}</p>}
+        {nowPlayingError && <p>현재 상영 중: {nowPlayingErrorMessage.message}</p>}
+        {upcomingError && <p>개봉 예정: {upcomingErrorMessage.message}</p>}
+        {topRateError && <p>평점 높은 영화: {topRateErrorMessage.message}</p>}
+      </div>
+    );
   }
 
   return (
@@ -129,10 +97,10 @@ const Home = () => {
           인기 영화 <FcFilm />
         </MovieSectionTitle>
 
-        {popularMovieList.length === 0 ? (
+        {popularData.length === 0 ? (
           <p>인기 영화가 없습니다.</p>
         ) : (
-          <MovieSwiper movieList={popularMovieList} />
+          <MovieSwiper movieList={popularData} />
         )}
       </MovieSection>
 
@@ -142,10 +110,10 @@ const Home = () => {
           현재 상영 중인 영화 <FcCloseUpMode />
         </MovieSectionTitle>
 
-        {nowPlayingMovieList.length === 0 ? (
+        {nowPlayingData.length === 0 ? (
           <p>현재 상영 중인 영화가 없습니다.</p>
         ) : (
-          <MovieSwiper movieList={nowPlayingMovieList} />
+          <MovieSwiper movieList={nowPlayingData} />
         )}
       </MovieSection>
 
@@ -155,10 +123,10 @@ const Home = () => {
           개봉 예정 영화 <FcPlanner />
         </MovieSectionTitle>
 
-        {upcomingMovieList.length === 0 ? (
+        {upcomingData.length === 0 ? (
           <p>개봉 예정 영화가 없습니다.</p>
         ) : (
-          <MovieSwiper movieList={upcomingMovieList} />
+          <MovieSwiper movieList={upcomingData} />
         )}
       </MovieSection>
 
@@ -168,10 +136,10 @@ const Home = () => {
           평점 높은 영화 <FcIdea />
         </MovieSectionTitle>
 
-        {topRateMovieList.length === 0 ? (
+        {topRateData.length === 0 ? (
           <p>평점 높은 영화가 없습니다.</p>
         ) : (
-          <MovieSwiper movieList={topRateMovieList} />
+          <MovieSwiper movieList={topRateData} />
         )}
       </MovieSection>
     </MoviePage>

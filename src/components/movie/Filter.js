@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { getGenres } from "../../api/genre";
 import styled from "styled-components";
 
@@ -39,20 +40,12 @@ const FilterButton = styled.button`
 `;
 
 const Filter = ({ onApplyFilter }) => {
-  const [genres, setGenres] = useState([]);
   const [filters, setFilters] = useState({ genre: "", sort: "" });
 
-  useEffect(() => {
-    const fetchGenres = async () => {
-      try {
-        const genreData = await getGenres();
-        setGenres(genreData);
-      } catch (err) {
-        console.error("Error fetching genres:", err);
-      }
-    };
-    fetchGenres();
-  }, []);
+  const { data: genres, isLoading, isError, error } = useQuery({
+    queryKey: ["genres"],
+    queryFn: getGenres,
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,6 +56,11 @@ const Filter = ({ onApplyFilter }) => {
     e.preventDefault();
     onApplyFilter(filters);
   };
+
+  if (isLoading) return <p>Loading genres...</p>;
+  if (isError) return <p>Error: {error.message}</p>;
+
+  const genreOptions = genres || [];
 
   return (
     <FilterForm onSubmit={submitFilter}>
@@ -78,7 +76,7 @@ const Filter = ({ onApplyFilter }) => {
 
       <StyledSelectbox name="genre" onChange={handleChange}>
         <option value="">모든 장르</option>
-        {genres.map((genre) => (
+        {genreOptions.map((genre) => (
           <option key={genre.id} value={genre.id}>
             {genre.name}
           </option>

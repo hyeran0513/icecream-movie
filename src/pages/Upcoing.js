@@ -3,6 +3,7 @@ import { getUpcoming } from "../api/upcoming";
 import styled from "styled-components";
 import Card from "../components/movie/Card";
 import Banner from "../components/movie/Banner";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 const MoviePage = styled.div`
   margin: 0 auto;
@@ -31,7 +32,7 @@ const MovieList = styled.ul`
 
 const ButtonWrapper = styled.div`
   margin-top: 30px;
-    
+
   @media (max-width: 768px) {
     margin-top: 20px;
   }
@@ -57,45 +58,28 @@ const ButtonMore = styled.button`
 `;
 
 const Upcoming = () => {
-  const [movieList, setMovieList] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [page, setPage] = useState(1);
-
-  const fetchUpcoming = async (page) => {
-    try {
-      const upcomingData = await getUpcoming(page);
-
-      if (page === 1) {
-        // 첫 페이지일 경우 이전 결과를 덮어씀
-        setMovieList(upcomingData);
-      } else {
-        // 그 외 페이지일 경우 기존 목록에 추가
-        setMovieList((prevMovies) => [...prevMovies, ...upcomingData]);
-      }
-    } catch (err) {
-      setError(err.message);
-      console.error("에러:", err);
-    } finally {
-      setLoading(false);
-    }
+  const fetchUpcoming = async ({ pageParam = 1 }) => {
+    const upcomingData = await getUpcoming(pageParam);
+    return { data: upcomingData, nextPage: pageParam + 1 };
   };
 
-  useEffect(() => {
-    fetchUpcoming(page);
-  }, [page]);
+  const { data, isLoading, isError, error, fetchNextPage, hasNextPage } =
+    useInfiniteQuery({
+      queryKey: ["upcoming"],
+      queryFn: fetchUpcoming,
+      getNextPageParam: (lastPage) => {
+        return lastPage.data.length > 0 ? lastPage.nextPage : undefined;
+      },
+    });
 
-  // 더 보기 핸들러
-  const handleLoadMore = () => {
-    setPage((prevPage) => prevPage + 1);
-  };
+  const movieList = data?.pages.flatMap((page) => page.data) || [];
 
-  if (loading && page === 1) {
+  if (isLoading) {
     return <p>Loading...</p>;
   }
 
-  if (error) {
-    return <p>Error: {error}</p>;
+  if (isError) {
+    return <p>Error: {error.message}</p>;
   }
 
   return (
@@ -109,9 +93,9 @@ const Upcoming = () => {
           ))}
         </MovieList>
 
-        {movieList.length >= 20 && (
+        {hasNextPage && (
           <ButtonWrapper>
-            <ButtonMore type="button" onClick={handleLoadMore}>
+            <ButtonMore type="button" onClick={() => fetchNextPage()}>
               더 보기
             </ButtonMore>
           </ButtonWrapper>

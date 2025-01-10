@@ -3,7 +3,12 @@ import styled from "styled-components";
 import Modal from "./Modal";
 import { getDetail } from "../../api/detail";
 import { getReview } from "../../api/review";
-import { BiSolidUserCircle, BiChevronDown, BiSolidImageAlt } from "react-icons/bi";
+import {
+  BiSolidUserCircle,
+  BiChevronDown,
+  BiSolidImageAlt,
+} from "react-icons/bi";
+import { useQuery } from "@tanstack/react-query";
 
 const CardPosterWrapper = styled.div`
   position: relative;
@@ -238,34 +243,29 @@ const ReviewDate = styled.p`
 `;
 
 const Card = ({ movie }) => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [movieDetail, setMovieDetail] = useState(null);
-  const [movieReview, setMovieReview] = useState([]);
   const [showReview, setShowReview] = useState(false);
   const [isPosterError, setIsPosterError] = useState(false);
 
-  const fetchMovieData = async () => {
-    if (!movie || !movie.id) return;
+  const {
+    data: movieDetail,
+    isLoading: isDetailLoading,
+    error: detailError,
+  } = useQuery({
+    queryKey: ["movieDetail", movie?.id],
+    queryFn: () => getDetail({ movieId: movie.id }),
+    enabled: !!movie?.id,
+  });
 
-    setLoading(true);
-    try {
-      const detailData = await getDetail({ movieId: movie.id });
-      const reviewData = await getReview({ movieId: movie.id });
-
-      setMovieDetail(detailData);
-      setMovieReview(reviewData);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchMovieData();
-  }, [movie]);
+  const {
+    data: movieReview,
+    isLoading: isReviewLoading,
+    error: reviewError,
+  } = useQuery({
+    queryKey: ["movieReview", movie?.id],
+    queryFn: () => getReview({ movieId: movie.id }),
+    enabled: !!movie?.id,
+  });
 
   const openDetailModal = () => {
     setIsModalOpen(true);
@@ -279,17 +279,17 @@ const Card = ({ movie }) => {
     setShowReview((prev) => !prev);
   };
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
-
   const handleError = () => {
     setIsPosterError(true);
   };
+
+  if (isDetailLoading || isReviewLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (detailError || reviewError) {
+    return <p>Error: {detailError?.message || reviewError?.message}</p>;
+  }
 
   return (
     <>
@@ -320,7 +320,7 @@ const Card = ({ movie }) => {
 
       {/* 상세 보기 모달 */}
       <Modal
-        isOpen={isModalOpen || ''}
+        isOpen={isModalOpen || ""}
         onClose={closeModal}
         movie={movieDetail || ""}
         review={movieReview || []}

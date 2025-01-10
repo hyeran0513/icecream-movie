@@ -12,6 +12,9 @@ import NowPlaying from "./pages/NowPlaying";
 import Upcoming from "./pages/Upcoing";
 import TopRate from "./pages/TopRate";
 import Popular from "./pages/Popular";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -34,72 +37,102 @@ function App() {
   };
 
   return (
-    <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
-      <div className="App">
-        <GlobalStyle />
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+        <div className="App">
+          <GlobalStyle />
 
-        <Router>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <DefaultLayout toggleTheme={toggleTheme} toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen}>
-                  <Home />
-                </DefaultLayout>
-              }
-            />
-            <Route
-              path="/search"
-              element={
-                <DefaultLayout toggleTheme={toggleTheme} toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen}>
-                  <SearchResult />
-                </DefaultLayout>
-              }
-            />
-            <Route
-              path="/popular"
-              element={
-                <SubLayout toggleTheme={toggleTheme} toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen}>
-                  <Popular />
-                </SubLayout>
-              }
-            />
-            <Route
-              path="/nowplaying"
-              element={
-                <SubLayout toggleTheme={toggleTheme} toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen}>
-                  <NowPlaying />
-                </SubLayout>
-              }
-            />
-            <Route
-              path="/upcoming"
-              element={
-                <SubLayout toggleTheme={toggleTheme} toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen}>
-                  <Upcoming />
-                </SubLayout>
-              }
-            />
-            <Route
-              path="/topRate"
-              element={
-                <SubLayout toggleTheme={toggleTheme} toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen}>
-                  <TopRate />
-                </SubLayout>
-              }
-            />
-            <Route
-              path="/movie"
-              element={
-                <SubLayout toggleTheme={toggleTheme} toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen}>
-                  <Movie />
-                </SubLayout>
-              }
-            />
-          </Routes>
-        </Router>
-      </div>
-    </ThemeProvider>
+          <Router>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <DefaultLayout
+                    toggleTheme={toggleTheme}
+                    toggleSidebar={toggleSidebar}
+                    isSidebarOpen={isSidebarOpen}
+                  >
+                    <Home />
+                  </DefaultLayout>
+                }
+              />
+              <Route
+                path="/search"
+                element={
+                  <DefaultLayout
+                    toggleTheme={toggleTheme}
+                    toggleSidebar={toggleSidebar}
+                    isSidebarOpen={isSidebarOpen}
+                  >
+                    <SearchResult />
+                  </DefaultLayout>
+                }
+              />
+              <Route
+                path="/popular"
+                element={
+                  <SubLayout
+                    toggleTheme={toggleTheme}
+                    toggleSidebar={toggleSidebar}
+                    isSidebarOpen={isSidebarOpen}
+                  >
+                    <Popular />
+                  </SubLayout>
+                }
+              />
+              <Route
+                path="/nowplaying"
+                element={
+                  <SubLayout
+                    toggleTheme={toggleTheme}
+                    toggleSidebar={toggleSidebar}
+                    isSidebarOpen={isSidebarOpen}
+                  >
+                    <NowPlaying />
+                  </SubLayout>
+                }
+              />
+              <Route
+                path="/upcoming"
+                element={
+                  <SubLayout
+                    toggleTheme={toggleTheme}
+                    toggleSidebar={toggleSidebar}
+                    isSidebarOpen={isSidebarOpen}
+                  >
+                    <Upcoming />
+                  </SubLayout>
+                }
+              />
+              <Route
+                path="/topRate"
+                element={
+                  <SubLayout
+                    toggleTheme={toggleTheme}
+                    toggleSidebar={toggleSidebar}
+                    isSidebarOpen={isSidebarOpen}
+                  >
+                    <TopRate />
+                  </SubLayout>
+                }
+              />
+              <Route
+                path="/movie"
+                element={
+                  <SubLayout
+                    toggleTheme={toggleTheme}
+                    toggleSidebar={toggleSidebar}
+                    isSidebarOpen={isSidebarOpen}
+                  >
+                    <Movie />
+                  </SubLayout>
+                }
+              />
+            </Routes>
+          </Router>
+        </div>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 

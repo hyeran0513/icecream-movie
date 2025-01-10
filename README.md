@@ -26,6 +26,7 @@ https://hyeran0513.github.io/icecream-movie/
 | **react-icons** | 다양한 아이콘을 React 컴포넌트로 사용할 수 있는 라이브러리 |
 | **swiper.js** | 터치 슬라이더 기능을 제공하는 JavaScript 라이브러리 |
 | **axios** | 서버와의 HTTP 통신을 위해 사용하는 라이브러리 |
+| **react-query** | 서버 데이터 관리 라이브러리 |
 
 ## 사용 API
 
@@ -41,6 +42,7 @@ TMDB API를 활용하여 다음과 같은 엔드포인트를 사용하였습니�
 | `/movie/top_rated`           | 높은 평점을 받은 영화 조회 |
 | `/movie/upcoming`            | 개봉 예정인 영화 조회 |
 | `/movie/discovery`           | 다양한 조건으로 영화 검색 |
+| `/genre/movie/list`          | 영화 장르 목록 조회 |
 
 ## 주요 기능
 
